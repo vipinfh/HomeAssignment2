@@ -1,0 +1,89 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+class Car {
+    private int id;
+    private String make;
+    private String model;
+    private int year;
+    private String color;
+    private double price;
+    private String registrationNumber;
+
+    // Constructor
+    public Car(int id, String make, String model, int year, String color, double price, String registrationNumber) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.color = color;
+        this.price = price;
+        this.registrationNumber = registrationNumber;
+    }
+
+    // Getters and setters (omitted for brevity)
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Make: " + make + ", Model: " + model + ", Year: " + year +
+                ", Color: " + color + ", Price: " + price + ", Reg. Number: " + registrationNumber;
+    }
+}
+
+public class CarManagement {
+    public static void main(String[] args) {
+        // Create an array of Car objects
+        List<Car> cars = new ArrayList<>();
+        cars.add(new Car(1, "Toyota", "Camry", 2018, "Blue", 25000.0, "ABC123"));
+        cars.add(new Car(2, "Honda", "Civic", 2017, "Red", 22000.0, "XYZ456"));
+        cars.add(new Car(3, "Ford", "Focus", 2019, "Silver", 27000.0, "DEF789"));
+        cars.add(new Car(4, "Toyota", "Corolla", 2020, "Black", 28000.0, "GHI123"));
+
+        // Save list of cars of a given brand to a file
+        saveCarsByBrand(cars, "Toyota", "ToyotaCars.txt");
+
+        // Save list of cars of a given model that have been in use for more than n years to a file
+        saveCarsByModelAndYearsInUse(cars, "Civic", 2, "CivicCars.txt");
+
+        // Save list of cars of a given year of manufacture with a price higher than a specified value to a file
+        saveCarsByYearAndPrice(cars, 2019, 26000.0, "Expensive2019Cars.txt");
+    }
+
+    public static void saveCarsByBrand(List<Car> cars, String brand, String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (Car car : cars) {
+                if (car.getMake().equalsIgnoreCase(brand)) {
+                    writer.println(car.toString());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveCarsByModelAndYearsInUse(List<Car> cars, String model, int years, String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            int currentYear = 2023; // Assuming the current year is 2023
+            for (Car car : cars) {
+                if (car.getModel().equalsIgnoreCase(model) && (currentYear - car.getYear()) > years) {
+                    writer.println(car.toString());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveCarsByYearAndPrice(List<Car> cars, int year, double minPrice, String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (Car car : cars) {
+                if (car.getYear() == year && car.getPrice() > minPrice) {
+                    writer.println(car.toString());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
