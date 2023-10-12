@@ -8,6 +8,6 @@ The program creates a list of Car objects and saves subsets of these cars to dif
 
 This program was excecuted in JDK 21 and it was written in a Text Editor(Notepad)
 For running the code
-first download and save the file with filename extension .java 
+first download and save the file with  CarManagement extension .java 
 Compile using javac CarManagement.java
 run using java CarManagement
