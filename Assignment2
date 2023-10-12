@@ -11,7 +11,6 @@ class Car {
     private double price;
     private String registrationNumber;
 
-    // Constructor
     public Car(int id, String make, String model, int year, String color, double price, String registrationNumber) {
         this.id = id;
         this.make = make;
@@ -22,7 +21,33 @@ class Car {
         this.registrationNumber = registrationNumber;
     }
 
-    // Getters and setters (omitted for brevity)
+        public int getId() {
+        return id;
+    }
+
+    public String getMake() {
+        return make;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
 
     @Override
     public String toString() {
@@ -40,47 +65,47 @@ public class CarManagement {
         cars.add(new Car(3, "Ford", "Focus", 2019, "Silver", 27000.0, "DEF789"));
         cars.add(new Car(4, "Toyota", "Corolla", 2020, "Black", 28000.0, "GHI123"));
 
-        // Save list of cars of a given brand to a file
+        // Save cars to different files based on criteria
         saveCarsByBrand(cars, "Toyota", "ToyotaCars.txt");
-
-        // Save list of cars of a given model that have been in use for more than n years to a file
         saveCarsByModelAndYearsInUse(cars, "Civic", 2, "CivicCars.txt");
-
-        // Save list of cars of a given year of manufacture with a price higher than a specified value to a file
         saveCarsByYearAndPrice(cars, 2019, 26000.0, "Expensive2019Cars.txt");
     }
 
     public static void saveCarsByBrand(List<Car> cars, String brand, String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            for (Car car : cars) {
-                if (car.getMake().equalsIgnoreCase(brand)) {
-                    writer.println(car.toString());
-                }
+        List<Car> filteredCars = new ArrayList<>();
+        for (Car car : cars) {
+            if (car.getMake().equalsIgnoreCase(brand)) {
+                filteredCars.add(car);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        saveCarsToFile(filteredCars, filename);
     }
 
     public static void saveCarsByModelAndYearsInUse(List<Car> cars, String model, int years, String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            int currentYear = 2023; // Assuming the current year is 2023
-            for (Car car : cars) {
-                if (car.getModel().equalsIgnoreCase(model) && (currentYear - car.getYear()) > years) {
-                    writer.println(car.toString());
-                }
+        List<Car> filteredCars = new ArrayList<>();
+        int currentYear = 2023; // Assuming the current year is 2023
+        for (Car car : cars) {
+            if (car.getModel().equalsIgnoreCase(model) && (currentYear - car.getYear()) > years) {
+                filteredCars.add(car);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        saveCarsToFile(filteredCars, filename);
     }
 
     public static void saveCarsByYearAndPrice(List<Car> cars, int year, double minPrice, String filename) {
+        List<Car> filteredCars = new ArrayList<>();
+        for (Car car : cars) {
+            if (car.getYear() == year && car.getPrice() > minPrice) {
+                filteredCars.add(car);
+            }
+        }
+        saveCarsToFile(filteredCars, filename);
+    }
+
+    public static void saveCarsToFile(List<Car> cars, String filename) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             for (Car car : cars) {
-                if (car.getYear() == year && car.getPrice() > minPrice) {
-                    writer.println(car.toString());
-                }
+                writer.println(car.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
